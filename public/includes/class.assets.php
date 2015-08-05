@@ -18,7 +18,9 @@ class wpSearchAssets{
 
 		// url for json api
 		$home_url = function_exists('json_get_url_prefix') ? json_get_url_prefix() : false;
-		$settings = array( 'root' => home_url( $home_url ), 'nonce' => wp_create_nonce( 'wp_json' ) );
+
+
+		$settings = array( 'root' => home_url( '/wp-json/wp/v2' ), 'nonce' => wp_create_nonce( 'wp_json' ) );
 
 		// wp api client
 		wp_enqueue_script( 'wp-api-js', WP_LIVE_SEARCH_URL.'/public/assets/js/util--wp-api.js', array( 'jquery', 'underscore', 'backbone' ), WP_LIVE_SEARCH_VERSION, true );

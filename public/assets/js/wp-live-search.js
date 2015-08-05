@@ -36,7 +36,7 @@
 			,	notEmpty    = '' !== val
 			,	type        = $( this ).data('object-type')
 			,	total       = $( main ).data('number')
-			,	url 		= api+'/'+type+'filter[s]='+val+'&filter[posts_per_page]='+total
+			,	url 		= api+'/'+type+'s='+val+'&filter&per_page='+total;
 
 			// 600ms delay so we dont exectute excessively
 			timer = setTimeout(function() {
@@ -66,7 +66,7 @@
 					$( helper ).fadeOut().remove();
 
 					// remove the cose
-					destroyClose()
+					destroyClose();
 
 					// make the search request
 					$.getJSON( url, function( response ) {
@@ -108,9 +108,9 @@
 							// loop through each object
               $.each( response, function ( i ) {
 
-                  $(postList).append( itemTemplate( { post: response[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
-                  .removeClass('wpls--empty')
-                  .addClass('wpls--full')
+                $(postList).append( itemTemplate( { post: response[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
+                	.removeClass('wpls--empty')
+                	.addClass('wpls--full');
 
               } );
           }

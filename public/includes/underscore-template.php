@@ -24,10 +24,10 @@ if ( !function_exists( 'wpls_backbone_templates' ) ):
 							<% } %>
 						<% } %>
 						<div class="wpls--item-title-wrap">
-							<h4 class="wpls--item-title"><%= post.title %></h4>
+							<h4 class="wpls--item-title"><%= post.title.rendered %></h4>
 						</div>
 						<% if ( 'enabled' == excerpt ) { %>
-							<div class="wpls--item-excerpt"><%= post.excerpt %></div>
+							<div class="wpls--item-excerpt"><%= post.excerpt.rendered %></div>
 						<% } %>
 					</a>
 				</li>
