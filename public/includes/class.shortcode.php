@@ -50,8 +50,20 @@ class wpSearchShortcode{
 
 			<?php do_action('wpls_inside_top'); // action ?>
 
+			<div id="wpls--input-wrap">
+
+				<?php do_action('wpls_inside_input'); // action ?>
+
+				<form action="<?php echo home_url('/'); ?>" method="GET">
+					<input name="s" itemprop="query-input" type="text" data-object-type="<?php echo esc_attr( $type );?>" id="wpls--input" placeholder="<?php echo esc_attr( $atts['placeholder'] );?>">
+				</form>
+				
+				<div id="wpls--loading" class="wpls--loading"><div class="wpls--loader"></div></div>
+
+			</div>
+
 			<?php if( $results_style !== false ) { ?>
-			<div class="wpls--results-wrap">
+			<div class="wpls--results-wrap wpls--hide">
 
 				<?php do_action('wpls_inside_results'); // action ?>
 
@@ -60,15 +72,6 @@ class wpSearchShortcode{
 
 			</div>
 			<?php } ?>
-
-			<div id="wpls--input-wrap">
-
-				<?php do_action('wpls_inside_input'); // action ?>
-
-				<input itemprop="query-input" type="text" data-object-type="<?php echo esc_attr( $type );?>" id="wpls--input" placeholder="<?php echo esc_attr( $atts['placeholder'] );?>">
-				<div id="wpls--loading" class="wpls--loading"><div class="wpls--loader"></div></div>
-
-			</div>
 
 			<?php if ( !$atts['target'] ) { ?>
 			<ul itemprop="target" id="wpls--post-list"></ul>

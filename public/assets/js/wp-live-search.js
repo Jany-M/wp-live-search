@@ -1,21 +1,21 @@
 (function( $, Backbone, _, WP_API_Settings, undefined ) {
 
-	jQuery('document').ready( function( $ ){
+	$(document).ready( function( $ ){
 
 		var backboneTemplate = $('#wpls--tmpl')
 		,	itemTemplate     = _.template( backboneTemplate.html() )
 		,	posts            = new wp.api.collections.Posts()
 		,	main             = '#wpls'
-		,	postList		 = '#wpls--post-list'
+		,	postList		 		 = '#wpls--post-list'
 		,	postList         = $( main ).data('target') ? $( main ).data('target') : postList
 		,	showExcerpt      = $( main ).data('excerpt') ? 'enabled' : 'disabled'
 		,	results          = '#wpls--results'
 		,	loader           = '#wpls--loading'
-		,	input  			 = '#wpls--input'
+		,	input  			 		 = '#wpls--input'
 		,	helper           = '#wpls--helper'
 		,	helperText       = wp_search_vars.helperText
 		,	helperSpan       = '<span id="wpls--helper">'+helperText+'</span>'
-		,	clear     		 = '<i id="wpls--clear-search" class="dashicons dashicons-dismiss"></i>'
+		,	clear     		   = '<i id="wpls--clear-search" class="dashicons dashicons-dismiss"></i>'
 		,	clearItem        = '#wpls--clear-search'
 		,	hideClass        = 'wpls--hide'
 		,	showClass        = 'wpls--show'
@@ -24,17 +24,17 @@
 
 		$( postList ).addClass('wpls--empty');
 
-		$( input ).on('keyup keypress', function ( e ) {
+		$(document).on('keyup keypress', input, function ( e ) {
 
 			// clear the previous timer
-			clearTimeout(timer)
+			clearTimeout( timer )
 
 			var key         = e.which
 			,	that        = this
 			,	val 		= $.trim( $(this).val() )
 			,	valEqual    = val == $(that).val()
 			,	notEmpty    = '' !== val
-			,	type        = $(this).data('object-type')
+			,	type        = $( this ).data('object-type')
 			,	total       = $( main ).data('number')
 			,	url 		= api+'/'+type+'filter[s]='+val+'&filter[posts_per_page]='+total
 
@@ -73,7 +73,7 @@
 
 						// remove current list of posts
 						$(postList).children().remove();
-						$(postList).removeClass('wpls--full').addClass('wpls--empty')
+						$(postList).removeClass('wpls--full').addClass('wpls--empty');
 
 						// show results
 						$(results).parent().removeClass('wpls--hide').addClass('wpls--show');
@@ -106,20 +106,20 @@
 							$(results).text( response.length ).closest( main ).removeClass('wpls--no-results');
 
 							// loop through each object
-			                $.each( response, function ( i ) {
+              $.each( response, function ( i ) {
 
-			                    $(postList).append( itemTemplate( { post: response[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
-			                    .removeClass('wpls--empty')
-			                    .addClass('wpls--full')
+                  $(postList).append( itemTemplate( { post: response[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
+                  .removeClass('wpls--empty')
+                  .addClass('wpls--full')
 
-			                } );
-			            }
+              } );
+          }
 
 					});
 
 				}
 
-			}, 600);
+			}, 300);
 
 			// if there's no value then destroy the search
 			if ( val == '' ) {
@@ -133,7 +133,7 @@
 		/**
 		*	Clear search
 		*/
-		$( main ).on('click', clearItem, function(e){
+		$( document ).on('click', clearItem, function(e){
 
 			e.preventDefault();
 			destroySearch();
