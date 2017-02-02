@@ -51,6 +51,36 @@ class wpSearchShortcode{
 
 		}
 
+		// Remove all filters (added by other plugins)
+		function remove_filters() {
+			remove_all_filters( 'pre_get_posts', 999 );
+			//remove_filter('relevanssi_results', 999);
+		}
+		add_action( 'wpls_before', 'remove_filters', 10);
+
+		// Relevanssi search issue (results = 0)
+		/*function relevanssi_disable_filter($ok) {
+		    global $wp_query;
+		    if (empty($wp_query->query_vars['s']) || $wp_query->query_vars['s'] == " ") {
+		        return false;
+		    } else {
+		        return $ok;
+		    }
+		}
+		function relevanssi_df_query_filter_return($query) {
+			return false;
+		}
+		add_filter('relevanssi_df_query_filter', 'relevanssi_df_query_filter_return');
+		function relevanssi_didyoumean_url_return($url) {
+			return false;
+		}
+		add_filter('relevanssi_didyoumean_url', 'relevanssi_didyoumean_url_return');
+		function just_return() {
+			return false;
+		}
+		add_filter('relevanssi_fuzzy_query', 'just_return');
+		add_filter('relevanssi_results', 'just_return');*/
+
 		ob_start();
 
 		do_action('wpls_before'); // action ?>
@@ -66,7 +96,7 @@ class wpSearchShortcode{
 				<form action="<?php echo home_url('/'); ?>" method="GET">
 					<input name="s" itemprop="query-input" type="text" data-search-in="<?php echo $search_in; ?>" data-object-type='<?php if (true == $atts["multi"]) {echo json_encode($type);} else {echo $type; }; ?>' id="wpls--input" placeholder="<?php echo esc_attr( $atts['placeholder'] );?>">
 				</form>
-				
+
 				<div id="wpls--loading" class="wpls--loading"><div class="wpls--loader"></div></div>
 
 			</div>
