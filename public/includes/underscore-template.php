@@ -16,11 +16,9 @@ if ( !function_exists( 'wpls_backbone_templates' ) ):
 			<script type="text/html" id="wpls--tmpl">
 				<li id="wpls--item-<%= post.ID %>" class="wpls--item">
 					<a href="<%= post.link %>" class="wpls--link">
-						<% if ( post.featured_image ) { %>
-							<% if ( post.featured_image.attachment_meta ) { %>
-								<img class="wpls--item-image" src="<%= post.featured_image.attachment_meta.sizes.thumbnail.url %>" alt="<% if ( post.featured_image.title ) { %><%=post.featured_image.title%><% } %> ">
-							<% } else { %>
-								<img class="wpls--item-image" src="<%= post.featured_image.source %>" alt="<% if ( post.featured_image.title ) { %><%=post.featured_image.title%><% } %> ">
+						<% if ( post.featured_media ) { %>
+							<% if ( post._embedded["wp:featuredmedia"]["0"].media_details.sizes.thumbnail.source_url ) { %>
+								<img class="wpls--item-image" src='<%= post._embedded["wp:featuredmedia"]["0"].media_details.sizes.thumbnail.source_url %>' alt='<% if ( post._embedded["wp:featuredmedia"]["0"].media_details.image_meta.title ) { %><%=post._embedded["wp:featuredmedia"]["0"].media_details.image_meta.title%><% } %> '>
 							<% } %>
 						<% } %>
 						<div class="wpls--item-title-wrap">

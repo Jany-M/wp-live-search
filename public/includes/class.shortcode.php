@@ -10,23 +10,25 @@ class wpSearchShortcode{
 	public function shortcode( $atts, $content = null ) {
 
 		$defaults = array(
-			'type'	 		=> 'posts', // 'posts', 'pages', 'books', or 'posts,pages,books'
-			'multi'			=> false, // set to true if passing multiple types above
-			'number'		=> 20, // return a certain number of search results
-			'compact'		=> false, // display search in a scaled down version with less padding and smaller fonts
-			'dropdown'		=> false, // display results as a drop down instead of pushing down content around the search
-			'excerpt'		=> false, // optionally display the excerpt along with the title and featured image
-			'placeholder'	=> __('Search...','wp-live-search'),
-			'results' 		=> __('entries found','wp-live-search'),
-			'results_style' => 'default', // 'default', 'inside' : repositions the search label
-			'target'		=> '' // an optional UL item to send the search result items too
+			'type'					=> 'posts', // 'posts', 'pages', 'books', or 'posts,pages,books'
+			'multi'					=> false, // set to true if passing multiple types above
+			'number'				=> 20, // return a certain number of search results
+			'compact'				=> false, // display search in a scaled down version with less padding and smaller fonts
+			'dropdown'			=> false, // display results as a drop down instead of pushing down content around the search
+			'excerpt'				=> false, // optionally display the excerpt along with the title and featured image
+			'placeholder'		=> __('Search...','wp-live-search'),
+			'results'				=> __('entries found','wp-live-search'),
+			'results_style'	=> 'default', // 'default', 'inside' : repositions the search label
+			'target'				=> '', // an optional UL item to send the search result items too
+			'search_in'			=> 'default'
 		);
 		$atts = shortcode_atts( $defaults, $atts );
 
-		$mode        	= true == $atts['compact'] ? 'wpls--style-compact' : false;
-		$collapse     	= true == $atts['dropdown'] ? 'wpls--collapse' : false;
-		$results_text 	= $atts['results'] ? $atts['results'] : false;
-		$results_style  = sprintf('wpls--results-style-%s', trim( $atts['results_style'] ) );
+		$mode						= true == $atts['compact'] ? 'wpls--style-compact' : false;
+		$collapse				= true == $atts['dropdown'] ? 'wpls--collapse' : false;
+		$results_text		= $atts['results'] ? $atts['results'] : false;
+		$results_style	= sprintf('wpls--results-style-%s', trim( $atts['results_style'] ) );
+		$search_in 			= $atts['search_in'];
 
 		// if multiple post objects being passed
 		if ( true == $atts['multi'] ) {
@@ -35,11 +37,18 @@ class wpSearchShortcode{
 			$chunks = self::return_chunks( $atts['type'] );
 
 			// return the type to search
-			$type = $atts['type'] ? sprintf('posts?%s', $chunks ) : false;
+			$type = explode(",", $atts['type']);
+
+			// remove spaces
+			function trim_value(&$value) {
+				$value = trim($value);
+			}
+			array_walk($type, 'trim_value');
 
 		} else {
 
-			$type = 'posts' == $atts['type'] || 'pages' == $atts['type'] ? sprintf('%s?', trim( $atts['type'] ) ) : sprintf('posts?type=%s&', trim( $atts['type'] ) );
+			$type = 'posts';
+
 		}
 
 		ob_start();
@@ -55,7 +64,7 @@ class wpSearchShortcode{
 				<?php do_action('wpls_inside_input'); // action ?>
 
 				<form action="<?php echo home_url('/'); ?>" method="GET">
-					<input name="s" itemprop="query-input" type="text" data-object-type="<?php echo esc_attr( $type );?>" id="wpls--input" placeholder="<?php echo esc_attr( $atts['placeholder'] );?>">
+					<input name="s" itemprop="query-input" type="text" data-search-in="<?php echo $search_in; ?>" data-object-type='<?php if (true == $atts["multi"]) {echo json_encode($type);} else {echo $type; }; ?>' id="wpls--input" placeholder="<?php echo esc_attr( $atts['placeholder'] );?>">
 				</form>
 				
 				<div id="wpls--loading" class="wpls--loading"><div class="wpls--loader"></div></div>

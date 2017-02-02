@@ -1,3 +1,7 @@
 .DS_Store
 node_modules
 .sass-cache
+.remote-sync.json
+_.remote-sync.json
+*.json
+.gitignore

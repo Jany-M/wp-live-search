@@ -29,14 +29,15 @@
 			// clear the previous timer
 			clearTimeout( timer )
 
-			var key         = e.which
-			,	that        = this
-			,	val 		= $.trim( $(this).val() )
-			,	valEqual    = val == $(that).val()
-			,	notEmpty    = '' !== val
-			,	type        = $( this ).data('object-type')
-			,	total       = $( main ).data('number')
-			,	url 		= api+'/'+type+'s='+val+'&filter&per_page='+total;
+			var key				= e.which
+			,	that				= this
+			,	val					= $.trim( $(this).val() )
+			,	valEqual		= val == $(that).val()
+			,	notEmpty		= '' !== val
+			,	type				= $( this ).data('object-type')
+			,	total				= $( main ).data('number')
+			,	search_in		= $( this ).data('search-in')
+			,	url					= api+'/'+type+'?search='+val+'&per_page='+total+'&_embed';
 
 			// 600ms delay so we dont exectute excessively
 			timer = setTimeout(function() {
@@ -68,9 +69,41 @@
 					// remove the cose
 					destroyClose();
 
-					// make the search request
-					$.getJSON( url, function( response ) {
+					// multiple request
+					if ( type != 'posts' ) {
+						
+						var multiData = [];
 
+						$.each( type, function( index, value ) {
+							url = api+'/'+value+'?search='+val+'&per_page='+total+'&_embed';
+
+							// make the search request
+							$.getJSON( url, function( response ) {
+								multiData = $.merge( $.merge( [], multiData ), response );
+								multiData.sort(function (obj1, obj2 ) {
+									return obj1.date - obj2.date;
+								});
+								show_results( multiData );
+							});
+
+						});
+
+					} 
+					//single request
+					else {
+
+						// make the search request
+						$.getJSON( url, function( response ) {
+							show_results( response );
+						});
+
+					};
+
+					function show_results( data ) {
+						// slice array if muiltiple request
+						if ( type != 'posts' && data.length > total ) {
+							data = data.slice( 0, total );
+						}
 						// remove current list of posts
 						$(postList).children().remove();
 						$(postList).removeClass('wpls--full').addClass('wpls--empty');
@@ -82,7 +115,7 @@
 						$(loader).removeClass('wpls--show').addClass('wpls--hide');
 
 						// count results and show
-						if ( response.length == 0 ) {
+						if ( data.length == 0 ) {
 
 							// results are empty int
 							$(results).text('0').closest( main ).addClass('wpls--no-results');
@@ -103,19 +136,48 @@
 							}
 
 							// show how many results we have
-							$(results).text( response.length ).closest( main ).removeClass('wpls--no-results');
+							$(results).text( data.length ).closest( main ).removeClass('wpls--no-results');
 
 							// loop through each object
-              $.each( response, function ( i ) {
+							if ( search_in == 'title' ) {
 
-                $(postList).append( itemTemplate( { post: response[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
-                	.removeClass('wpls--empty')
-                	.addClass('wpls--full');
+								var count = 0;
+								$.each( data, function ( i ) {
+									if ( ~data[i].title.rendered.toLowerCase().indexOf( val.toLowerCase() ) ) {
+										$(postList).append( itemTemplate( { post: data[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
+										.removeClass('wpls--empty')
+										.addClass('wpls--full');
+										count++;
+									}
+									$(results).text( count );
+								} );
 
-              } );
+							} else if ( search_in == 'content' ) {
+
+								var count = 0;
+								$.each( data, function ( i ) {
+									if ( ~data[i].content.rendered.toLowerCase().indexOf( val.toLowerCase() ) ) {
+										$(postList).append( itemTemplate( { post: data[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
+										.removeClass('wpls--empty')
+										.addClass('wpls--full');
+										count++;
+									}
+									$(results).text( count );
+								} );
+
+							} else {
+
+								$.each( data, function ( i ) {
+									$(postList).append( itemTemplate( { post: data[i], settings: WP_API_Settings, excerpt: showExcerpt } ) )
+									.removeClass('wpls--empty')
+									.addClass('wpls--full');
+
+								} );
+
+							}
           }
 
-					});
+					}; // End function work
 
 				}
 

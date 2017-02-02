@@ -12,6 +12,6 @@ function wp_live_search( $type = '', $placeholder = '', $results = '' ){
 	if ( empty( $type ) )
 		$type = 'posts';
 
-	echo do_shortcode('[wp_live_search type="'.sanitize_text_field( trim( $type ) ).'" placeholder="'.sanitize_text_field( trim( $placeholder ) ).'" results="'.sanitize_text_field( trim( $results ) ).'" ]');
+	echo do_shortcode('[wp_live_search type="'.sanitize_text_field( trim( $type ) ).'" placeholder="'.sanitize_text_field( trim( $placeholder ) ).'" results="'.sanitize_text_field( trim( $results ) ).'" search_in="'.sanitize_text_field( trim( $search_in ) ).'" ]');
 
 }

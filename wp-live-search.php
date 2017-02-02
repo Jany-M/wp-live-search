@@ -2,16 +2,19 @@
 /**
  *
  * @package   WP_Live_Search
- * @author    Nick Haskins <email@nickhaskins.com>
+ * @author    Jaay Martelli <info@shambix.com>
  * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2015 Your Name or Company Name
+ * @link      https://github.com/Jany-M/wp-live-search
  *
  * Plugin Name:       WP Live Search
- * Plugin URI:        http://nickhaskins.com
- * Description:       A super light-weight live search plugin that utilizes the WP REST API
- * Version:           0.9
- * GitHub Plugin URI: https://github.com/bearded-avenger/wp-live-search
+ * Plugin URI:        http://www.shambix.com
+ * Description:       A super light-weight live search plugin that utilizes the WP REST API V2. Search isn't working atm.
+ * Version:           2.0
+ * GitHub Plugin URI: https://github.com/Jany-M/wp-live-search
+ *
+ * Original Author			Nick Haskins <email@nickhaskins.com>
+ * Original Author URI:  	http://nickhaskins.com
+ * Original Script:			https://github.com/bearded-avenger/wp-live-search
  */
 
 // If this file is called directly, abort.

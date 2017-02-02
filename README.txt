@@ -1,10 +1,10 @@
-=== WP Live Search ===
-Contributors: nphaskins
-Author URI: http://nickhaskins.com
-Plugin URI: http://nickhaskins.com/wpls
-Tags: search, live search
-Requires at least: 3.5.1
-Tested up to: 4.2.1
+=== WP Live Search V2 ===
+Contributors: Shambix, dukessa, nphaskins
+Author URI: http://www.shambix.com
+Plugin URI:  https://github.com/Jany-M/wp-live-search
+Tags: search, live search, api, rest api, search api, json
+Requires at least: 4.4
+Tested up to: 4.7.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,57 +13,57 @@ A super light-weight live search plugin that utilizes the WP REST API.
 
 == Description ==
 
-WP Live Search (beta) is a search plugin for WordPress that returns results as the user types for what they are looking. It currently supports posts, pages, post types, including multiple post types, and design modes.  
+WP Live Search is a search plugin for WordPress that returns results as the user types for what they are looking. It currently supports posts, pages, post types, including multiple post types, and design modes.
 
-This is very much a working prototype, so please log any issues you find on the Github repo below.  
-[https://github.com/bearded-avenger/wp-live-search](https://github.com/bearded-avenger/wp-live-search)  
+This is very much a working prototype, so please log any issues you find on the Github repo below.
+[https://github.com/bearded-avenger/wp-live-search](https://github.com/bearded-avenger/wp-live-search)
 
-Here's some documentation.  
-[http://bearded-avenger.github.io/wp-live-search/](http://bearded-avenger.github.io/wp-live-search/)  
+Here's some documentation.
+[http://bearded-avenger.github.io/wp-live-search/](http://bearded-avenger.github.io/wp-live-search/)
 
-Add the shortcode `[wp_live_search]` to a page or something. There's a few shortcode attributes that you can use, and are as follows:  
+Add the shortcode `[wp_live_search]` to a page or something. There's a few shortcode attributes that you can use, and are as follows:
 
-type=""  
+type=""
 Your choices are `posts` or `pages`. Defaults to `posts`. You can also pass `type,type` to search multiple post types. For example type="recipes,books"
 
-multi=""  
+multi=""
 By default this is turned off. Set this to true only if you're using multiple post types above.
 
-placeholder=""  
+placeholder=""
 The text displayed in the input. Defaults to `Search...`.
 
-number=""  
+number=""
 Total search result to return. Default is 20
 
-excerpt="true"  
+excerpt="true"
 Show the excerpt along with the title and featured image (if set)
 
-compact="true"  
+compact="true"
 Makes a tiny WP Live Search for use in header widgets and such
 
-dropdown="true"  
+dropdown="true"
 Display search results as a drop-down instead of pushing down the content around it
 
-results=""  
+results=""
 The text displayed for the results. Defaults to `entries found`.
 
-results_style="inside"  
+results_style="inside"
 Displays the "entries found" inside of the input area, useful for using in areas like header widgets where space is minimal.
 
-target=""  
+target=""
 An optional target UL parent to send the search results to. Example `target="#someotherdiv"`.
 
 ---
 
 Here are a couple examples:
 
-Default Usage:  
+Default Usage:
 `[wp_live_search]`
 
-Use in Header Widget:  
+Use in Header Widget:
 `[wp_live_search compact="true" dropdown="true" results="found" results_style="inside"]`
 
-Search through multiple post types:  
+Search through multiple post types:
 `[wp_live_search multi="true" type="posts,page"]`
 
 == Installation ==
@@ -76,7 +76,7 @@ Search through multiple post types:
 
 = Using FTP =
 
-1. Download `aesop-core.zip`
+1. Download `wp-live-search.zip`
 2. Extract the `wp-live-search` directory to your computer
 3. Upload the `wp-live-search` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
@@ -113,6 +113,10 @@ Yep! Just copy over the function from underscore-template.php (without the funct
 2. compact mode
 
 == Changelog ==
+
+= 2.0 =
+* added compatibility with latest WP API in core (no more extra plugins needed)
+* restored multi post logics
 
 = 0.9 =
 * added some CSS classes wpls--empty and wpls--full to the custom target div to aid in custom theming
@@ -163,6 +167,3 @@ Yep! Just copy over the function from underscore-template.php (without the funct
 * added a loading indicator
 * added option to set entries text
 * misc fixes
-
-
-
