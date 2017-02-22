@@ -4,8 +4,20 @@ class wpSearchShortcode{
 
 	public function __construct(){
 
-		add_shortcode('wp_live_search',		array($this,'shortcode'));
+		add_shortcode('wp_live_search',	array($this,'shortcode'));
+
+		// Relevanssi fix
+		remove_filter('posts_request', 'relevanssi_prevent_default_request', 10, 2 );
+
 	}
+
+	/*public function readd_filters() {
+		// Relevanssi fix
+		add_filter('posts_request', 'relevanssi_prevent_default_request', 10, 2 );
+	}
+	// Relevanssi fix - Readd filter
+	//add_action('posts_request', array($this,'readd_filters'));
+	add_filter('posts_request', 'relevanssi_prevent_default_request', 10, 2 ); */
 
 	public function shortcode( $atts, $content = null ) {
 
@@ -51,36 +63,6 @@ class wpSearchShortcode{
 
 		}
 
-		// Remove all filters (added by other plugins)
-		function remove_filters() {
-			remove_all_filters( 'pre_get_posts', 999 );
-			//remove_filter('relevanssi_results', 999);
-		}
-		add_action( 'wpls_before', 'remove_filters', 10);
-
-		// Relevanssi search issue (results = 0)
-		/*function relevanssi_disable_filter($ok) {
-		    global $wp_query;
-		    if (empty($wp_query->query_vars['s']) || $wp_query->query_vars['s'] == " ") {
-		        return false;
-		    } else {
-		        return $ok;
-		    }
-		}
-		function relevanssi_df_query_filter_return($query) {
-			return false;
-		}
-		add_filter('relevanssi_df_query_filter', 'relevanssi_df_query_filter_return');
-		function relevanssi_didyoumean_url_return($url) {
-			return false;
-		}
-		add_filter('relevanssi_didyoumean_url', 'relevanssi_didyoumean_url_return');
-		function just_return() {
-			return false;
-		}
-		add_filter('relevanssi_fuzzy_query', 'just_return');
-		add_filter('relevanssi_results', 'just_return');*/
-
 		ob_start();
 
 		do_action('wpls_before'); // action ?>
@@ -123,6 +105,7 @@ class wpSearchShortcode{
 		<?php do_action('wpls_after'); // action
 
 		return ob_get_clean();
+
 	}
 
 	/**
